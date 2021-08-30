@@ -6,9 +6,9 @@ import vue from '@vitejs/plugin-vue'
 const transformIndexHtml = (code) => {
   switch (process.env.NODE_ENV) {
     case 'production':
-      return code.replace(/__MAIN__/, '/website/main.prod.js')
+      return code.replace(/__MAIN__/, '/src/main.prod.js')
     default:
-      return code.replace(/__MAIN__/, '/website/main.dev.js')
+      return code.replace(/__MAIN__/, '/src/main.dev.js')
   }
 }
 
@@ -18,7 +18,7 @@ export default defineConfig({
   root: __dirname,
   plugins: [
     {
-      name: 'website-transform',
+      name: 'src-transform',
       enforce: 'pre',
       transform (code, id) {
         if (id.endsWith('.html')) {
@@ -41,7 +41,7 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: [
-      'vue'
+      // 'vue'
     ],
     exclude: ['__MAIN__']
   },

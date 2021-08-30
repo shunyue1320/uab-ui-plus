@@ -2,9 +2,11 @@
   "name": "uab-ui-plus",
   "version": "0.0.0",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development vite",
+    "dev": "yarn gen-version && cross-env NODE_ENV=development vite",
+    "build:package": "yarn gen-version && tsc -b --force tsconfig.esm.json",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "gen-version": "node scripts/gen-version"
   },
   "dependencies": {
   },
@@ -12,6 +14,7 @@
     "@vitejs/plugin-vue": "^1.6.0",
     "@vue/compiler-sfc": "^3.0.5",
     "cross-env": "^7.0.3",
+    "typescript": "~4.3.0",
     "vite": "^2.5.1",
     "vue": "^3.2.6"
   },
