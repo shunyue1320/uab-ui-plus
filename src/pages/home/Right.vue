@@ -1,8 +1,12 @@
+
 <template>
-  <router-view />
+  <div>
+    right
+  </div>
 </template>
 
 <script setup>
+
 </script>
 
 <style>
