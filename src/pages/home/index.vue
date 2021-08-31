@@ -1,6 +1,7 @@
 
 <template>
   <h2>home --- theme：{{ theme }}  -------- lang：{{ lang }}</h2>
+  <u-button>UButton</u-button>
 </template>
 
 <script setup>

@@ -32,7 +32,7 @@ export default defineConfig({
   // https://cn.vitejs.dev/config/#resolve-alias
   resolve: {
     alias: process.env.NODE_ENV !== 'production'
-      ? [ {find: 'uab-ui-plus', replacement: path.resolve(__dirname, './src')} ]
+      ? [ {find: 'uab-ui-plus', replacement: path.resolve(__dirname, './package/index.ts')} ]
       : undefined
   },
   define: {
