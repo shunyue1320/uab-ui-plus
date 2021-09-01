@@ -1,4 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './routes'
+import naive from 'uab-ui-plus'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+app.use(router)
+app.use(naive)
+app.mount('#app')
