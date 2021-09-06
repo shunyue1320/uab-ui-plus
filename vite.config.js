@@ -1,7 +1,9 @@
 import path from 'path'
+import fs from 'fs-extra'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-
+import demoLoader from './build/loaders/naive-ui-demo-loader'
+import docLoader from './build/loaders/naive-ui-doc-loader'
 
 const transformIndexHtml = (code) => {
   switch (process.env.NODE_ENV) {
@@ -11,6 +13,22 @@ const transformIndexHtml = (code) => {
       return code.replace(/__MAIN__/, '/src/main.dev.js')
   }
 }
+
+const fileRegex = /\.(md|entry)$/
+// 作用：
+const vuePlugin = vue({
+  include: [/\.vue$/, /\.md$/, /\.entry$/]
+})
+async function getTransformedVueSrc (path) {
+  if (path.endsWith('.demo.md')) {
+    const code = await fs.readFile(path, 'utf-8')
+    return demoLoader(code, path)
+  } else if (path.endsWith('.md')) {
+    const code = await fs.readFile(path, 'utf-8')
+    return docLoader(code, path)
+  }
+}
+
 
 
 // https://vitejs.dev/config/
@@ -27,7 +45,25 @@ export default defineConfig({
       },
       transformIndexHtml
     },
-    vue()
+    {
+      name: 'demo-vite',
+      transform (_, id) {
+        if (fileRegex.test(id)) {
+          return getTransformedVueSrc(id)
+        }
+      },
+      async handleHotUpdate (ctx) {
+        const { file } = ctx
+        if (fileRegex.test(file)) {
+          const code = await getTransformedVueSrc(file)
+          return vuePlugin.handleHotUpdate({
+            ...ctx,
+            read: () => code
+          })
+        }
+      }
+    },
+    vuePlugin
   ],
   // https://cn.vitejs.dev/config/#resolve-alias
   resolve: {

@@ -10,6 +10,17 @@ const routes = [
         path: '/:theme/:lang',
         component: () => import('../pages/home/index.vue'),
         props: true
+      },
+      {
+        name: 'zhComponents',
+        path: '/:theme/zh-CN/components',
+        component: () => import('../pages/Layout.vue'),
+        children: [
+          {
+            path: 'button',
+            component: () => import('../../package/button/docs/zh-CN/index.docs-entry.md')
+          }
+        ]
       }
     ]
   },
@@ -19,7 +30,7 @@ const routes = [
       name: 'home',
       params: {
         theme: 'light',
-        lang: navigator.language === 'zh-CN' ? 'zh-CN1' : 'en-US'
+        lang: navigator.language === 'zh-CN' ? 'zh-CN' : 'en-US'
       }
     }
   },

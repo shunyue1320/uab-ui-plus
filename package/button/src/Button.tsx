@@ -1,16 +1,22 @@
 import { h, defineComponent } from 'vue';
 
+const buttonProps = {
+  color: String
+}
+
+
 const Button = defineComponent({
   name: 'Button',
+  props: buttonProps,
   setup (props) {
     return {
       ...props
     }
   },
   render () {
-    const { $slots } = this
+    const { $slots, color } = this
     return (
-      <button>{$slots}</button>
+      <button style={{ background: color }}>{$slots}</button>
     )
   }
 })
