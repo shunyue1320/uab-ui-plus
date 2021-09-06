@@ -46,7 +46,7 @@ export default defineConfig({
       transformIndexHtml
     },
     {
-      name: 'demo-vite',
+      name: 'docs-vite',
       transform (_, id) {
         if (fileRegex.test(id)) {
           return getTransformedVueSrc(id)
