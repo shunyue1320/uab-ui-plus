@@ -2,8 +2,8 @@ import path from 'path'
 import fs from 'fs-extra'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import demoLoader from './build/loaders/naive-ui-demo-loader'
-import docLoader from './build/loaders/naive-ui-doc-loader'
+import demoLoader from './build/loaders/md-docs-loader'
+import docLoader from './build/loaders/md-entry-loader'
 
 const transformIndexHtml = (code) => {
   switch (process.env.NODE_ENV) {
@@ -17,10 +17,11 @@ const transformIndexHtml = (code) => {
 const fileRegex = /\.(md|entry)$/
 // 作用：
 const vuePlugin = vue({
+  // https://github.com/vitejs/vite/tree/main/packages/plugin-vue#readme
   include: [/\.vue$/, /\.md$/, /\.entry$/]
 })
 async function getTransformedVueSrc (path) {
-  if (path.endsWith('.demo.md')) {
+  if (path.endsWith('.docs.md')) {
     const code = await fs.readFile(path, 'utf-8')
     return demoLoader(code, path)
   } else if (path.endsWith('.md')) {
@@ -30,12 +31,11 @@ async function getTransformedVueSrc (path) {
 }
 
 
-
 // https://vitejs.dev/config/
 export default defineConfig({
   root: __dirname,
   plugins: [
-    {
+    { // 通过环境变量判断走哪个入口 main 
       name: 'src-transform',
       enforce: 'pre',
       transform (code, id) {
@@ -45,8 +45,8 @@ export default defineConfig({
       },
       transformIndexHtml
     },
-    {
-      name: 'docs-vite',
+    { // md 文件转成 sfc 组件
+      name: 'vite-plugin-md',
       transform (_, id) {
         if (fileRegex.test(id)) {
           return getTransformedVueSrc(id)
