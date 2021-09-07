@@ -6,6 +6,12 @@
 
 ```demo
 color
+size
+```
+
+
+```component
+ArrowDownload16Regular: import ArrowDownload16Regular from '@vicons/fluent/ArrowDownload16Regular'
 ```
 
 ## Props

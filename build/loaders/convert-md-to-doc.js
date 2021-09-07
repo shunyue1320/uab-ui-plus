@@ -121,6 +121,7 @@ async function convertMd2ComponentDocumentation (
   let components = []
   if (~componentsIndex) {
     components = tokens[componentsIndex].text
+    // components = "ArrowDownload16Regular: import ArrowDownload16Regular from '@vicons/fluent/ArrowDownload16Regular'"
     components = components
       .split('\n')
       .map((component) => {
@@ -133,7 +134,12 @@ async function convertMd2ComponentDocumentation (
         }
       })
       .filter(({ ids, importStmt }) => ids && importStmt)
-    tokens.splice(componentsIndex, 1)
+
+    // components = {
+    //   ids: [ 'ArrowDownload16Regular' ],
+    //   importStmt: "import ArrowDownload16Regular from '@vicons/fluent/ArrowDownload16Regular'"
+    // }
+    tokens.splice(componentsIndex, 1) // 删除组件引入
   }
   // add edit on github button on title
   const titleIndex = tokens.findIndex(
